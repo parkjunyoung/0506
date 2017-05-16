@@ -50,6 +50,8 @@ router.post('/join', function(req, res){
 });
 
 router.get('/login', function(req, res){
+    //console.log(req.cookies._csrf);
+    console.log(req.cookies._csrf);
     res.render('accounts/login', { flashMessage : req.flash().error });
 });
 
@@ -71,6 +73,10 @@ router.get('/success', function(req, res){
 router.get('/logout', function(req, res){
     req.logout();
     res.redirect('/accounts/login');
+});
+
+router.get('/status', function(req, res){
+    res.json({ isLogin : req.isAuthenticated() });
 });
 
 

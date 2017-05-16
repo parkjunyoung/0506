@@ -38,13 +38,6 @@ var chat = require('./routes/chat');
 
 var app = express();
 
-
-var React = require('react');
-var ReactDOMServer  = require('react-dom/server');
-var StaticRouter  = require('react-router').StaticRouter;
-//var App = require('./src/components/App');
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -89,12 +82,19 @@ app.use(function(req, res, next) {
   next();
 });
 
+
 app.use('/', index);
-app.use('/users', users);
-app.use('/posts', posts);
-app.use('/accounts', accounts);
-app.use('/auth', auth);
-app.use('/chat', chat);
+app.use('/v1/users', users);
+app.use('/v1/posts', posts);
+app.use('/v1/accounts', accounts);
+app.use('/v1/auth', auth);
+app.use('/v1/chat', chat);
+
+
+
+app.get('*', function(req,res){
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

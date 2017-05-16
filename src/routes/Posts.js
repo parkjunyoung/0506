@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import csrfToken from "../libs/csrfToken";
 
-class About extends Component {
+class Posts extends Component {
     componentDidMount(){
         console.log(csrfToken);
     }
 
     render() {
         return (
-            <div>About</div>
+            <div>Posts</div>
         );
     }
 }
-export default About;
+export default Posts;

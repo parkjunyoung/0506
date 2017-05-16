@@ -4,9 +4,6 @@ var PostModel = require('../models/PostModel');
 var CommentModel = require('../models/CommentModel');
 var loginRequired = require('../libs/loginRequired');
 
-// csrf 셋팅
-var csrf = require('csurf');
-var csrfProtection = csrf({ cookie: true });
 
 //이미지 저장되는 위치 설정
 var path = require('path');
@@ -27,16 +24,22 @@ var upload = multer({ storage: storage });
 
 
 router.get('/', function(req, res){
-    PostModel.find( {}, function(err, posts){
-        res.render('posts/list', { posts : posts });
+    PostModel.find( {}, function(err, posts)
+{        res.render('posts/list', { posts : posts });
     });
 });
 
-router.get('/write', loginRequired , csrfProtection ,function(req, res){
-    res.render('posts/form' , { post : "" , csrfToken : req.csrfToken() });
+router.get( '/list' , (req, res) => {
+    PostModel.find( { } , (err , posts) => {
+        res.json( { posts : posts , } );
+    });
 });
 
-router.post('/write', loginRequired , upload.single('thumbnail') , csrfProtection , function(req, res){
+router.get('/write', loginRequired ,function(req, res){
+    res.render('posts/form' , { post : ""});
+});
+
+router.post('/write', loginRequired , upload.single('thumbnail') , function(req, res){
     var post = new PostModel({
         title : req.body.title,
         content : req.body.content,
@@ -52,15 +55,15 @@ router.post('/write', loginRequired , upload.single('thumbnail') , csrfProtectio
     }
 });
 
-router.get('/detail/:id', csrfProtection, function(req, res){
+router.get('/detail/:id', function(req, res){
     PostModel.findOne( { 'id' :  req.params.id } , function(err ,post){
         CommentModel.find({ post_id : req.params.id } , function(err, comments){
-            res.render('posts/detail', { post: post , comments : comments, csrfToken : req.csrfToken() });
+            res.render('posts/detail', { post: post , comments : comments});
         });        
     });
 });
 
-router.post('/ajax_comment/insert', csrfProtection, function(req, res){
+router.post('/ajax_comment/insert', function(req, res){
     if(req.xhr){ //ajax 일때만 응답
         var Comment = new CommentModel({
             content : req.body.content,
@@ -85,13 +88,13 @@ router.post('/ajax_comment/delete', function(req, res){
     }
 });
 
-router.get('/edit/:id', loginRequired , csrfProtection ,function(req, res){
+router.get('/edit/:id', loginRequired ,function(req, res){
     PostModel.findOne({ id : req.params.id } , function(err, post){
-        res.render('posts/form', { post : post, csrfToken : req.csrfToken() });
+        res.render('posts/form', { post : post });
     });
 });
 
-router.post('/edit/:id', loginRequired , upload.single('thumbnail'), csrfProtection, function(req, res){
+router.post('/edit/:id', loginRequired , upload.single('thumbnail'), function(req, res){
     //그 이전 파일명을 먼저 받아온다.
     PostModel.findOne( {id : req.params.id} , function(err, post){
 
