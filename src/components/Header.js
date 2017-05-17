@@ -11,8 +11,10 @@ class Header extends React.Component {
         this.state = { 
             isLogin : false
         };
-    }
+        this.viewStatus = this.viewStatus.bind(this);
 
+    }
+    
     componentDidMount(){
 
 
@@ -20,10 +22,14 @@ class Header extends React.Component {
         }).then( (res) => {
             this.setState({
                 isLogin: res.data.isLogin
-            });
+            }, this.viewStatus );
         }).catch( (error) => {
             console.log(error);
         });
+    }
+
+    viewStatus(){
+        console.log(this.state.isLogin);
     }
 
 
@@ -31,13 +37,17 @@ class Header extends React.Component {
     render(){
         const Login = () => {
             return (
-                <NavItem>LOGIN</NavItem>
+                <LinkContainer to="/accounts/login" changeAuth={this.changeAuth}>
+                    <NavItem>LOGIN</NavItem>
+                </LinkContainer>
             );
         };
 
         const Join = () => {
             return (
-                <NavItem>JOIN</NavItem>
+                <LinkContainer to="/accounts/join">
+                    <NavItem>JOIN</NavItem>
+                </LinkContainer>
             );
         };
 
@@ -73,6 +83,7 @@ class Header extends React.Component {
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
+            
         );  
     }
 }

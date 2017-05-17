@@ -21,20 +21,20 @@
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span>
                     </button> 
-                    <a href="/" class="navbar-brand">Nodejs</a>
+                    <a href="/v1/" class="navbar-brand">Nodejs</a>
                 </div> 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
                     <ul class="nav navbar-nav">
                         <li class="active">
-                            <a href="/">Home</a>
+                            <a href="/v1/">Home</a>
                         </li>
-                        <li><a href="/posts">Posts</a></li>
-                        <li><a href="/chat">Chat</a></li>
+                        <li><a href="/v1/posts">Posts</a></li>
+                        <li><a href="/v1/chat">Chat</a></li>
                         <% if(isLogin){%>
-                            <li><a href="/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">LOGOUT</a></li>
-                        <%}else{%>
-                            <li><a href="/accounts/join">JOIN</a></li> 
-                            <li><a href="/accounts/login">LOGIN</a></li>  
+                            <li><a href="/v1/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">LOGOUT</a></li>
+                        <%}else{%>z
+                            <li><a href="/v1/accounts/join">JOIN</a></li> 
+                            <li><a href="/v1/accounts/login">LOGIN</a></li>  
                         <%}%>
                     </ul> 
                 </div> 

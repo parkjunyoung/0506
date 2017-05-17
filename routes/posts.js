@@ -58,7 +58,7 @@ router.post('/write', loginRequired , upload.single('thumbnail') , function(req,
 router.get('/detail/:id', function(req, res){
     PostModel.findOne( { 'id' :  req.params.id } , function(err ,post){
         CommentModel.find({ post_id : req.params.id } , function(err, comments){
-            res.render('posts/detail', { post: post , comments : comments});
+            res.json({ post: post , comments : comments});
         });        
     });
 });

@@ -45,25 +45,29 @@ router.post('/join', function(req, res){
         displayname : req.body.displayname
     });
     User.save(function(err){
-        res.send('<script>alert("회원가입 성공");location.href="/accounts/login";</script>');
+        res.json({
+            message : "success"
+        });
     });
 });
 
 router.get('/login', function(req, res){
-    //console.log(req.cookies._csrf);
-    console.log(req.cookies._csrf);
     res.render('accounts/login', { flashMessage : req.flash().error });
 });
 
-router.post('/login' , 
-    passport.authenticate('local', { 
-        failureRedirect: '/accounts/login', 
-        failureFlash: true 
-    }), 
-    function(req, res){
-        res.send('<script>alert("로그인 성공");location.href="/posts";</script>');
-    }
-);
+router.post('/login' , (req, res ,next) => {
+    passport.authenticate('local', function(err, user, info){
+        console.log(user);
+        if(!user){
+            return res.json({ message: info.message });
+        }
+        req.logIn(user, function(err) {
+            return res.json({ message : "success" });
+        });
+
+    })(req, res, next);   
+});
+
 
 router.get('/success', function(req, res){
     res.send(req.user);
@@ -76,6 +80,7 @@ router.get('/logout', function(req, res){
 });
 
 router.get('/status', function(req, res){
+    console.log(req.user);
     res.json({ isLogin : req.isAuthenticated() });
 });
 
